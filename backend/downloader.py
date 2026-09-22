@@ -1,3 +1,4 @@
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -24,6 +25,34 @@ def _extract_media_title(info) -> str | None:
             if cleaned:
                 return cleaned
     return None
+
+
+def _youtube_js_runtimes() -> dict:
+    """
+    yt-dlp only enables Deno by default. This machine has Node, which can
+    solve YouTube's player challenge. Without a runtime, googlevideo URLs
+    come back as HTTP 403.
+    """
+    node = shutil.which("node")
+    if not node:
+        _log("node not found on PATH; YouTube downloads may fail with HTTP 403")
+        return {}
+    _log(f"YouTube JS runtime: node ({node})")
+    return {"node": {"path": node}}
+
+
+class _YtdlpLogger:
+    def debug(self, msg):
+        return None
+
+    def info(self, msg):
+        return None
+
+    def warning(self, msg):
+        _log(f"  yt-dlp warning: {msg}")
+
+    def error(self, msg):
+        _log(f"  yt-dlp error: {msg}")
 
 
 def download_audio(url: str, output_dir: Path, progress_cb=None) -> tuple[Path, str | None]:
@@ -76,14 +105,15 @@ def download_audio(url: str, output_dir: Path, progress_cb=None) -> tuple[Path, 
         "postprocessor_hooks": [pp_hook],
         "noplaylist": True,
         "quiet": True,
-        "no_warnings": True,
+        "no_warnings": False,
         "noprogress": True,
+        "js_runtimes": _youtube_js_runtimes(),
         "socket_timeout": 60,
         "retries": 10,
         "fragment_retries": 10,
         "file_access_retries": 5,
         "concurrent_fragment_downloads": 1,
-        "logger": type("_", (), {"debug": lambda *a: None, "info": lambda *a: None, "warning": lambda *a: None, "error": lambda s, m: print(m, file=__import__('sys').stderr)})(),
+        "logger": _YtdlpLogger(),
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",

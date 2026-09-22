@@ -112,6 +112,16 @@ def _log(msg):
 
 
 def main():
+    from calibrate import detect_gpu_info
+
+    gpu_info = detect_gpu_info()
+    if gpu_info.get("cuda") and gpu_info.get("vram_mb", 0) > 0:
+        _log(f"GPU ready: {gpu_info.get('device', 'CUDA')} ({gpu_info['vram_mb']} MB)")
+    else:
+        _log("GPU not detected; compute will stay on CPU")
+    # Unsolicited so the UI can show the GPU even if the first RPC already timed out.
+    send({"type": "ready", **gpu_info})
+
     _log("Backend started, waiting for commands on stdin")
     pipeline = Pipeline(progress_callback=send)
 
@@ -201,12 +211,7 @@ def main():
                 send({"id": msg_id, "type": "error", "message": str(e)})
 
         elif method == "get_gpu_info":
-            try:
-                from summarizer import _detect_gpu_info
-                info = _detect_gpu_info()
-                send({"id": msg_id, "type": "result", **info})
-            except Exception:
-                send({"id": msg_id, "type": "result", "cuda": False, "device": "", "vram_mb": 0})
+            send({"id": msg_id, "type": "result", **gpu_info})
 
         elif method == "estimate_eta":
             try:
@@ -223,14 +228,8 @@ def main():
 
                 config = Config(**config_dict)
 
-                # Resolve device
-                device_resolved = config.device
-                if device_resolved == "auto":
-                    try:
-                        import torch
-                        device_resolved = "cuda" if torch.cuda.is_available() else "cpu"
-                    except ImportError:
-                        device_resolved = "cpu"
+                from transcriber import resolve_device
+                device_resolved = resolve_device(config.device)
 
                 eta_estimate = estimate(config, duration_sec, device_resolved)
                 eta_estimate["formatted_total"] = format_eta(eta_estimate["total_sec"])

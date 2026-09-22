@@ -607,19 +607,31 @@ function loadModels() {
   });
 }
 
-function loadGpuInfo() {
-  window.api.getGpuInfo().then((info) => {
-    if (info.cuda && info.vram_mb > 0) {
-      const vramGb = (info.vram_mb / 1024).toFixed(1);
-      gpuInfoBadge.textContent = `${info.device} · ${vramGb} GB`;
-      gpuInfoBadge.classList.add('badge-ok');
-      gpuInfoBadge.classList.remove('badge-warn');
-    } else {
-      gpuInfoBadge.textContent = 'CPU only';
-      gpuInfoBadge.classList.add('badge-warn');
-      gpuInfoBadge.classList.remove('badge-ok');
+let gpuDetected = false;
+
+function applyGpuInfo(info) {
+  if (!info || info.pending) {
+    if (!gpuDetected) {
+      gpuInfoBadge.textContent = 'detecting…';
+      gpuInfoBadge.classList.remove('badge-ok', 'badge-warn');
     }
-  }).catch(() => {
+    return;
+  }
+  if (info.cuda && info.vram_mb > 0) {
+    gpuDetected = true;
+    const vramGb = (info.vram_mb / 1024).toFixed(1);
+    gpuInfoBadge.textContent = `${info.device} · ${vramGb} GB`;
+    gpuInfoBadge.classList.add('badge-ok');
+    gpuInfoBadge.classList.remove('badge-warn');
+  } else {
+    gpuInfoBadge.textContent = 'CPU only';
+    gpuInfoBadge.classList.add('badge-warn');
+    gpuInfoBadge.classList.remove('badge-ok');
+  }
+}
+
+function loadGpuInfo() {
+  window.api.getGpuInfo().then(applyGpuInfo).catch(() => {
     gpuInfoBadge.textContent = 'unknown';
     gpuInfoBadge.classList.add('badge-warn');
     gpuInfoBadge.classList.remove('badge-ok');
@@ -900,6 +912,10 @@ btnCancel.addEventListener('click', () => {
 
 // === Backend messages ===
 window.api.onMessage((msg) => {
+  if (msg.type === 'ready') {
+    applyGpuInfo(msg);
+  }
+
   if (msg.type === 'progress') {
     queueProgressUpdate(msg);
   }

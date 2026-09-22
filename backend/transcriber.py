@@ -37,20 +37,25 @@ def _filter_hallucinations(segments: list[dict]) -> list[dict]:
     return filtered
 
 
+def resolve_device(device: str | None) -> str:
+    """Resolve auto/empty device to cuda or cpu via ctranslate2."""
+    if device in ("cuda", "cpu"):
+        return device
+    try:
+        import ctranslate2
+        return "cuda" if ctranslate2.get_cuda_device_count() > 0 else "cpu"
+    except Exception as e:
+        _log(f"CUDA detection via ctranslate2 failed: {e}, falling back to CPU")
+        return "cpu"
+
+
 def _resolve_device_and_compute(config: Config) -> tuple[str, str]:
     """
     Resolve device (cuda/cpu) and compute_type for faster-whisper.
     Uses ctranslate2.get_cuda_device_count() for CUDA detection (no torch needed).
     Falls back to CPU if CUDA is unavailable or cuDNN is missing.
     """
-    device = config.device
-    if device == "auto":
-        try:
-            import ctranslate2
-            device = "cuda" if ctranslate2.get_cuda_device_count() > 0 else "cpu"
-        except Exception as e:
-            _log(f"CUDA detection via ctranslate2 failed: {e}, falling back to CPU")
-            device = "cpu"
+    device = resolve_device(config.device)
 
     compute_type = config.compute_type
     if compute_type == "auto":

@@ -4,7 +4,10 @@ faster-whisper>=1.1.0
 # Windows + NVIDIA GPU: PyPI serves a CPU-only wheel by default; see README and
 # backend/requirements-llama-cuda.txt for prebuilt CUDA wheels (no local compile).
 llama-cpp-python>=0.3.0
-yt-dlp>=2024.0.0
+# 2026.8.19 drops the YouTube android_vr client that returns HTTP 403.
+# yt-dlp-ejs solves YouTube's JS challenge via the Node runtime.
+yt-dlp>=2026.8.19
+yt-dlp-ejs>=0.8.0
 huggingface-hub>=0.25.0
 pydantic>=2.0.0
 pydub>=0.25.1

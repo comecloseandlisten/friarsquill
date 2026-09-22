@@ -17,7 +17,7 @@ from audio import (
     get_duration,
 )
 
-from transcriber import transcribe, ASRRuntime
+from transcriber import transcribe, ASRRuntime, resolve_device
 from summarizer import summarize
 from formatter import format_markdown, format_batch_markdown
 from eta import estimate, record_run, format_eta
@@ -603,15 +603,7 @@ class Pipeline:
 
             if duration_sec is not None:
                 try:
-                    # Resolve device
-                    device_resolved = config.device
-                    if device_resolved == "auto":
-                        try:
-                            import torch
-                            device_resolved = "cuda" if torch.cuda.is_available() else "cpu"
-                        except ImportError:
-                            device_resolved = "cpu"
-
+                    device_resolved = resolve_device(config.device)
                     eta_estimate = estimate(config, duration_sec, device_resolved)
                     self._eta(msg_id, "pre", {
                         "duration_sec": duration_sec,
@@ -666,13 +658,7 @@ class Pipeline:
 
             # Record transcription time for calibration
             try:
-                device_resolved = config.device
-                if device_resolved == "auto":
-                    try:
-                        import torch
-                        device_resolved = "cuda" if torch.cuda.is_available() else "cpu"
-                    except ImportError:
-                        device_resolved = "cpu"
+                device_resolved = resolve_device(config.device)
                 rt_factor = transcribe_elapsed / duration_sec if duration_sec else None
                 if rt_factor:
                     record_run("transcribe", f"{config.whisper_model}_{device_resolved}", rt_factor)
@@ -682,13 +668,7 @@ class Pipeline:
             # Recalculate ETA now that transcription is done
             if duration_sec is not None:
                 try:
-                    recalc_device = config.device
-                    if recalc_device == "auto":
-                        try:
-                            import torch
-                            recalc_device = "cuda" if torch.cuda.is_available() else "cpu"
-                        except ImportError:
-                            recalc_device = "cpu"
+                    recalc_device = resolve_device(config.device)
                     updated_eta = estimate(config, duration_sec, recalc_device)
                     remaining_sec = updated_eta["summarize_sec"]
                     self._eta(msg_id, "runtime", {
@@ -757,13 +737,7 @@ class Pipeline:
                 stage_times["summarize"] = summarize_elapsed
 
                 try:
-                    device_resolved = config.device
-                    if device_resolved == "auto":
-                        try:
-                            import torch
-                            device_resolved = "cuda" if torch.cuda.is_available() else "cpu"
-                        except ImportError:
-                            device_resolved = "cpu"
+                    device_resolved = resolve_device(config.device)
 
                     llm_key_parts = []
                     if config.llm_model_path:

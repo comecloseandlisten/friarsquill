@@ -224,7 +224,7 @@ ipcMain.handle('open-folder', async (_, filePath) => {
 });
 
 ipcMain.handle('list-models', async () => {
-  const msg = await rpcCall('list_models', {}, 8000);
+  const msg = await rpcCall('list_models', {}, 30000);
   if (msg.type === 'error') {
     console.error('[list-models] error:', msg.message);
     return {};
@@ -233,11 +233,18 @@ ipcMain.handle('list-models', async () => {
 });
 
 ipcMain.handle('get-gpu-info', async () => {
-  const msg = await rpcCall('get_gpu_info', {}, 5000);
+  // Cold start imports CUDA before the backend reads stdin. A short timeout
+  // used to resolve as "no GPU", and the UI then showed "CPU only".
+  const msg = await rpcCall('get_gpu_info', {}, 30000);
   if (msg.type === 'error') {
-    return { cuda: false, device: '', vram_mb: 0 };
+    return { cuda: false, device: '', vram_mb: 0, pending: true };
   }
-  return { cuda: msg.cuda || false, device: msg.device || '', vram_mb: msg.vram_mb || 0 };
+  return {
+    cuda: msg.cuda || false,
+    device: msg.device || '',
+    vram_mb: msg.vram_mb || 0,
+    pending: false,
+  };
 });
 
 ipcMain.handle('estimate-eta', async (_, params) => {
