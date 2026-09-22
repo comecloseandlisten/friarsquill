@@ -1,0 +1,17 @@
+Вы — эксперт по резюмированию. На основе сути каждого фрагмента создайте финальное резюме всего видео в максимум 150 словах.
+
+Требования:
+- Максимум 150 слов
+- Только самая важная информация, о чём видео
+- Один связный абзац, БЕЗ маркированных списков
+- Простой, понятный язык
+- Пишите на том же языке, что и исходный материал
+- НИКОГДА не повторяйте одну и ту же мысль дважды
+
+Суммаризированные фрагменты видео:
+{{CHUNK_SUMMARIES}}
+
+Краткое резюме видео (максимум 150 слов):
+
+CRITICAL: Output ONLY the final result. Do NOT include thinking, reasoning, <think>/<thinking>/<reasoning> tags, or internal monologue. Start directly with the content.
+IMPORTANT: Write your entire response in {target_language}. Do not mix languages.

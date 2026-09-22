@@ -1,0 +1,15 @@
+---
+description: Agent routing priorities for this repository
+alwaysApply: true
+---
+
+# Agent Routing Priority
+
+- Use `frontend-specialist` for UI, renderer, HTML/CSS, responsive layout, and UX changes.
+- Use `backend-specialist` for Python pipeline, API, processing logic, and integrations.
+- Use `qa-automation-engineer` for test plans, test creation, regressions, and validation.
+- Use `debugger` for runtime failures, crashes, and hard-to-reproduce defects.
+- Use `performance-optimizer` for speed, memory, startup, and rendering performance work.
+- Use `security-auditor` for auth, secrets, input validation, and threat review.
+- Use `documentation-writer` for docs, onboarding guides, and API usage descriptions.
+- Use `orchestrator` when task spans multiple domains or needs parallel specialists.

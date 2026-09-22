@@ -1,0 +1,42 @@
+# Windows + NVIDIA: CUDA-enabled llama-cpp-python (summarizer GPU offload)
+#
+# Full recipe to compile llama-cpp-python with CUDA locally (VS + CMake + toolkit):
+#   docs/WINDOWS_LLAMA_CPP_CUDA_SOURCE_BUILD.md
+#
+# PyPI’s default Windows wheel for llama-cpp-python is CPU-only, so
+# llama_supports_gpu_offload() stays False. Upstream abetlen indexes (whl/cu12x)
+# primarily publish CUDA wheels for Linux; Windows CUDA prebuilds were also
+# disrupted in CI (“Temporarily disable windows cuda wheels” — see upstream repo).
+#
+# Recommended fix (prebuilt, same API family as this project — 0.3.20):
+#   https://github.com/dougeeai/llama-cpp-python-wheels/releases
+#
+# Pick ONE asset that matches your GPU architecture (NVIDIA compute capability)
+# and the CUDA toolkit line you actually have installed (cublas DLL major version).
+#
+# Release tag pattern (examples):
+#   v0.3.20-cuda13.0-sm89   — Ada Lovelace (RTX 40xx, L4, L40…), CUDA 13.0 toolkit, driver 580+
+#   v0.3.20-cuda13.0-sm86   — Ampere (RTX 30xx, A-series…), CUDA 13.0
+#   v0.3.20-cuda13.0-sm75   — Turing (RTX 20xx…), CUDA 13.0
+#   v0.3.20-cuda12.1-sm86   — Ampere, CUDA 12.x toolkit (cublas64_12), driver 525.60.13+
+#   v0.3.20-cuda13.0-sm100-sm120 — Blackwell (RTX 50xx / listed datacenter SKUs), CUDA 13.0
+#
+# Install over the PyPI CPU build (venv activated):
+#   python -m pip install --force-reinstall --no-deps ^
+#     "https://github.com/dougeeai/llama-cpp-python-wheels/releases/download/v0.3.20-cuda13.0-sm89/llama_cpp_python-0.3.20+cuda13.0.sm89.ada-py3-none-win_amd64.whl"
+#
+# The `py3-none-win_amd64` wheels from dougeeai are still CUDA builds (ctypes);
+# they replace the PyPI `py3-none` CPU wheel — use --force-reinstall so pip swaps them.
+#
+# Verify:
+#   python -c "import llama_cpp.llama_cpp as L; print('gpu offload:', L.llama_supports_gpu_offload())"
+#
+# If import fails on missing cublas/cudnn, install matching NVIDIA pip wheels into
+# the same venv (e.g. nvidia-cublas-cu12 for CUDA 12.x) or install the CUDA toolkit
+# that matches the wheel (release notes on each GitHub asset spell this out).
+#
+# Other community options people use (evaluate trust / compatibility yourself):
+#   - JamePeng/llama-cpp-python fork releases (newer CUDA lines, direct .whl URLs)
+#   - Historical abetlen v0.3.4-cu124 cp312 win wheel if you must stay on that line
+#
+# This file is documentation only — not consumed by pip -r automatically.

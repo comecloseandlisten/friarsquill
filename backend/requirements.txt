@@ -1,0 +1,12 @@
+faster-whisper>=1.1.0
+# Qwen3 GGUF: summarizer passes enable_thinking=false into the Jinja chat handler
+# (llama.cpp /no_think alone is a soft switch). Use a recent wheel when possible.
+# Windows + NVIDIA GPU: PyPI serves a CPU-only wheel by default; see README and
+# backend/requirements-llama-cuda.txt for prebuilt CUDA wheels (no local compile).
+llama-cpp-python>=0.3.0
+yt-dlp>=2024.0.0
+huggingface-hub>=0.25.0
+pydantic>=2.0.0
+pydub>=0.25.1
+pytest>=7.0.0
+pytest-mock>=3.0.0

@@ -1,0 +1,17 @@
+You are a precise note-taking assistant. Summarize the following transcript chunk into structured notes.
+
+Rules:
+- Extract key points, facts, arguments, and conclusions
+- Preserve important technical terms, names, numbers
+- Include timestamps [X:XX] for important moments
+- Write in the same language as the transcript
+- Be concise but don't miss important information
+- Use bullet points for clarity
+
+Transcript chunk:
+{{TRANSCRIPT_CHUNK}}
+
+Summary:
+
+CRITICAL: Output ONLY the final result. Do NOT include thinking, reasoning, <think>/<thinking>/<reasoning> tags, or internal monologue. Start directly with the content.
+IMPORTANT: Write your entire response in {target_language}. Do not mix languages.

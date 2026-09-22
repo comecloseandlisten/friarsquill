@@ -1,0 +1,41 @@
+# localvideotranscriber / Friar's Quill
+
+> Offline Electron desktop app: download or open local media → transcribe (faster-whisper) → summarize (llama-cpp-python GGUF) → Markdown output. Python backend communicates with Electron via newline-delimited JSON on stdio (not HTTP).
+
+## Start here (humans & LLMs)
+
+- docs/LLM_GUIDE.md — repository map, IPC contract, pipeline stages, where to change behavior
+- docs/LLM_TASK_MATRIX.md — intent × files × symbols × tests × pitfalls (agent-oriented)
+- docs/LLM_BACKEND_REFERENCE.md — per-module backend responsibilities, symbols, contracts, caveats
+- docs/CHANGE_PLAYBOOK.md — task → files → pitfalls → validation for common changes
+- docs/IPC_PROTOCOL.md — full message schema (Electron IPC + backend stdin/stdout NDJSON)
+- docs/FUNCTION_INDEX.md — key functions/classes and why they matter
+- README.md — prerequisites, install, high-level architecture
+- docs/WINDOWS_LLAMA_CPP_CUDA_SOURCE_BUILD.md — Windows: build llama-cpp-python with CUDA from source (venv, CMAKE_ARGS)
+- docs/PROJECT_OVERVIEW_RU.md — краткий обзор функций, стека и архитектуры (RU)
+
+## Repository map (source only)
+
+- electron/main.js — spawns `backend/main.py`, parses stdout JSON, IPC bridge
+- electron/preload.js — exposes `window.api` to renderer (contextBridge)
+- electron/renderer/index.html, app.js — UI; calls `window.api.*` and listens for `python-message`
+- backend/main.py — stdin JSON-RPC loop: methods `process`, `process_batch`, `cancel`, `list_models`, `get_gpu_info`, `estimate_eta`
+- backend/pipeline.py — `Pipeline.run`, `Pipeline.run_batch`; orchestrates download → diarize → transcribe → summarize → format
+- backend/config.py — `Config` (Pydantic): whisper, LLM, diarization, batch, checkpoints, output
+- backend/transcriber.py — `transcribe`, `ASRRuntime`
+- backend/summarizer.py — `summarize`, `_detect_gpu_info`; `backend/prompts/` — LLM templates per summary mode
+- backend/downloader.py — `download_audio` (yt-dlp)
+- backend/audio.py — `get_duration`, `extract_audio`, chunking helpers
+- backend/diarizer.py — `diarize` (speechbrain / pyannote / energy)
+- backend/formatter.py — `format_markdown`, `format_batch_markdown`
+- backend/eta.py — ETA estimation helpers used by `estimate_eta` and runtime progress
+- backend/models_registry.py — `list_models(project_root)` for UI presets + local GGUF scan
+- backend/requirements.txt — Python dependencies
+- package.json — `npm start` → Electron; `main`: electron/main.js
+- backend/tests/ — unit tests; backend/tests/integration/ — integration tests
+- test_data/ — sample assets for tests (see test_data/README.md)
+
+## Non-goals for this file
+
+- Does not duplicate full API field lists; see docs/LLM_GUIDE.md and backend/main.py comments.
+- Does not list node_modules or generated output/ artifacts.

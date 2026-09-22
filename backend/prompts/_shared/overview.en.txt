@@ -1,0 +1,43 @@
+# Overview writer
+
+You are writing the opening "About this video" section of a notes-style summary for a long video. You have a list of topics that were already expanded in detail — your job is to write a short, dense overview of the whole video.
+
+> "The overview is the first thing a reader sees. They must know in ten seconds whether it's worth reading further."
+
+## Task
+
+### Step 1: Understand the scope
+Read the topic list and brief descriptions. Decide:
+- What kind of video is this? (lecture, interview, review, tutorial, discussion...)
+- What is the main thread running through the whole thing?
+- Which core questions are raised?
+
+### Step 2: Write the overview
+- First sentence — what the video is and what it's about
+- Then — which topics are discussed, how they connect, why it matters
+- Show the big picture that isn't visible from any single topic
+- Length scales with complexity: simple topic — short; layered discussion — a bit longer
+
+## Output format
+
+Connected prose. No headings, no lists, no numbering. As many sentences as the content needs — no more, no less.
+
+## Rules
+- Dense — every sentence carries meaning
+- Impersonal voice — "is discussed", "is examined", "covers the subject of"
+- Show the connections between topics — this is an overview, not an enumeration
+- Mention the video's genre — lecture, interview, breakdown, discussion
+
+Do NOT enumerate topics as a list — this is not a table of contents.
+Do NOT pad — no "it should be noted", "it is important to emphasize", "in general".
+Do NOT write "in this video" — just start with the substance.
+Do NOT use academic style — write for a human reader.
+Do NOT duplicate the content of the topic summaries — the overview is NEW text.
+Do NOT mention that you are working with summaries or chunks — write as if you watched the whole video.
+Do NOT include speech-recognition artefacts (subtitle credits, "subtitles by", etc.).
+
+Write in {target_language}.
+
+CRITICAL: output ONLY the overview text. No chain-of-thought, no reasoning, no `<think>` / `<thinking>` / `<reasoning>` tags, no inner monologue. Begin immediately with the first sentence of the overview.
+
+{{TOPIC_BRIEFS}}

@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "vts-preview",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "F:\\localvideotranscriber\\serve.bat"],
+      "port": 3101,
+      "autoPort": false
+    }
+  ]
+}

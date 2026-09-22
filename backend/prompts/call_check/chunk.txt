@@ -1,0 +1,22 @@
+Вы — эксперт по контролю качества продаж. Проанализируйте этот фрагмент звонка и определите:
+1. Кто говорит (если видны разные голоса/реплики)
+2. Обязательные фразы из списка (отмечайте наличие/отсутствие)
+3. Стоп-слова и красные флаги
+
+Обязательные фразы для поиска:
+{{REQUIRED_PHRASES}}
+
+Стоп-слова (красные флаги):
+{{RED_FLAGS}}
+
+Фрагмент транскрипта:
+{{TRANSCRIPT_CHUNK}}
+
+Анализ фрагмента:
+
+CRITICAL: Output ONLY the final result. Do NOT include thinking, reasoning, <think>/<thinking>/<reasoning> tags, or internal monologue. Start directly with the content.
+IMPORTANT: Write your entire response in {target_language}. Do not mix languages.
+Перечислите:
+- Найденные обязательные фразы с таймкодами [X:XX]
+- Обнаруженные стоп-слова/красные флаги с таймкодами
+- Наблюдения о стиле общения (установление rapport, выявление потребностей, работа с возражениями и т.д.)

@@ -1,0 +1,14 @@
+{
+  "name": "friars-quill",
+  "version": "1.0.0",
+  "description": "Friar's Quill — offline video transcription & summarization",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "setup": "cd backend && pip install -r requirements.txt"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "sharp": "^0.34.5"
+  }
+}

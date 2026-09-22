@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:;">
+  <title>Friar's Quill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=MedievalSharp&family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;600;700&family=Amiri:wght@400;700&family=Ma+Shan+Zheng&family=Shippori+Mincho:wght@400;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+  <!-- TODO: If offline support is needed, bundle fonts locally and remove Google Fonts link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dyslexia-mode">
+  <div class="app">
+    <!-- Parchment background wrapper -->
+    <div class="parchment-bg"></div>
+
+    <!-- Top bar: app title + status -->
+    <header class="topbar">
+      <div class="topbar-mark">
+        <svg class="seal seal-quill" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <!-- Feather body -->
+          <path d="M42 6C33 9 24 17 18 27C14 33 10 39 7 44
+                   C12 41 17 37 22 33C32 24 39 15 43 7.5
+                   C43.5 6.6 43 5.7 42 6Z"
+                fill="currentColor"
+                opacity="0.22"/>
+          <!-- Main contour -->
+          <path d="M42 6C33 9 24 17 18 27C14 33 10 39 7 44
+                   C12 41 17 37 22 33C32 24 39 15 43 7.5"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                opacity="0.92"/>
+          <!-- Shaft -->
+          <line x1="41.5" y1="7" x2="9.2" y2="42.6"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                opacity="0.96"/>
+          <!-- Inner vane split -->
+          <path d="M37.2 11.5C31 16.5 24.8 23.2 19 31.5"
+                stroke="currentColor"
+                stroke-width="1.1"
+                stroke-linecap="round"
+                opacity="0.55"/>
+          <!-- Nib and slit -->
+          <path d="M9.2 42.6L6.4 45.6L10.6 44.2Z" fill="currentColor" opacity="0.96"/>
+          <line x1="8.8" y1="43.5" x2="8.0" y2="45.0"
+                stroke="currentColor"
+                stroke-width="0.9"
+                stroke-linecap="round"
+                opacity="0.8"/>
+        </svg>
+        <svg class="seal seal-mace" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <line x1="17" y1="32" x2="33" y2="16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="34" cy="14" r="5" fill="currentColor" opacity="0.9"/>
+          <path d="M34 6V3M34 25V22M26 14H23M45 14H42M28.5 8.5L26.4 6.4M39.5 19.5L41.6 21.6M39.5 8.5L41.6 6.4M28.5 19.5L26.4 21.6"
+                stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="16" cy="33" r="2.8" fill="currentColor" opacity="0.8"/>
+        </svg>
+        <svg class="seal seal-lute" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <!-- Lute body (teardrop) -->
+          <ellipse cx="24" cy="30" rx="11" ry="13" fill="currentColor" opacity="0.18"/>
+          <ellipse cx="24" cy="30" rx="11" ry="13" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.9"/>
+          <!-- Sound hole (rosette) -->
+          <circle cx="24" cy="32" r="3" stroke="currentColor" stroke-width="1.0" fill="none" opacity="0.7"/>
+          <circle cx="24" cy="32" r="1" fill="currentColor" opacity="0.4"/>
+          <!-- Neck -->
+          <rect x="22.2" y="6" width="3.6" height="14" rx="1" fill="currentColor" opacity="0.15"/>
+          <rect x="22.2" y="6" width="3.6" height="14" rx="1" stroke="currentColor" stroke-width="1.3" fill="none" opacity="0.9"/>
+          <!-- Pegbox (angled) -->
+          <path d="M22.2 6 L21 2.5 L27 2.5 L25.8 6" stroke="currentColor" stroke-width="1.3" fill="currentColor" fill-opacity="0.12" stroke-linejoin="round"/>
+          <!-- Tuning pegs -->
+          <line x1="21.5" y1="3.5" x2="19.5" y2="3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="26.5" y1="3.5" x2="28.5" y2="3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="21.8" y1="5" x2="20" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="26.2" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <!-- Strings -->
+          <line x1="23" y1="8" x2="23" y2="40" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+          <line x1="24" y1="8" x2="24" y2="40" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+          <line x1="25" y1="8" x2="25" y2="40" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+          <!-- Bridge -->
+          <line x1="21" y1="38" x2="27" y2="38" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+        </svg>
+      </div>
+      <h1 class="topbar-title">
+        <span class="drop-cap">F</span>riar's&nbsp;Quill &nbsp;·&nbsp; <em id="topbar-subtitle">The Chronicler</em>
+      </h1>
+      <div class="topbar-controls">
+        <div class="mode-toggle" id="mode-toggle">
+          <button class="mode-btn mode-chronicle active" data-mode="chronicle" aria-pressed="true" title="Chronicle mode">Chronicle</button>
+          <button class="mode-btn mode-inquisition" data-mode="inquisition" aria-pressed="false" title="Inquisition mode">Inquisition</button>
+          <button class="mode-btn mode-bard" data-mode="bard" aria-pressed="false" title="Ballad mode — extract highlights">Ballad</button>
+        </div>
+        <div class="topbar-status" id="header-status"></div>
+      </div>
+    </header>
+
+    <!-- Two-column workspace: sidebar (controls) + main (result) -->
+    <div class="workspace">
+      <aside class="sidebar">
+
+        <!-- Source section -->
+        <section class="panel">
+          <h2 class="section-label">I. &nbsp;Whence cometh the voice</h2>
+          <div class="url-wrap">
+            <svg class="input-icon" viewBox="0 0 16 16" fill="none"><path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M9.646 10.5H12a3 3 0 0 0 0-6H9a3 3 0 0 0-2.83 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <input type="text" id="url-input" placeholder="inscribe a link hither…" spellcheck="false" autocomplete="off">
+          </div>
+          <div class="or-divider"><span>or bestow a folio</span></div>
+          <div class="dropzone" id="dropzone">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17 8 12 3 7 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span class="dropzone-text" id="file-label">lay a file upon this leaf</span>
+            <button id="btn-choose-file" class="dropzone-btn">Choose</button>
+          </div>
+        </section>
+
+        <!-- Settings section -->
+        <section class="panel collapsible collapsed" id="panel-rubrics">
+          <h2 class="section-label panel-toggle" data-panel="panel-rubrics">II. &nbsp;Rubrics of the scribe <span class="toggle-chevron">&#x25BE;</span></h2>
+          <div class="panel-body">
+          <div class="settings-grid">
+            <div class="setting">
+              <label class="setting-label" for="whisperModelSelect">Whisper codex</label>
+              <select id="whisperModelSelect">
+                <option value="">awaiting registry…</option>
+              </select>
+            </div>
+            <div class="setting">
+              <label class="setting-label" for="compute-type">Reckoning</label>
+              <select id="compute-type">
+                <option value="auto" selected>automatic</option>
+                <option value="int8">int8</option>
+                <option value="float16">float16</option>
+                <option value="float32">float32</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="setting full-width">
+              <label class="setting-label" for="llmModelSelect">Oracle (LLM)</label>
+              <select id="llmModelSelect">
+                <option value="">awaiting registry…</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="setting">
+              <label class="setting-label" for="contextWindowSelect">Oracle's memory</label>
+              <div class="select-with-badge">
+                <select id="contextWindowSelect">
+                  <option value="0" selected>auto</option>
+                  <option value="4096">4 096</option>
+                  <option value="8192">8 192</option>
+                  <option value="16384">16 384</option>
+                  <option value="32768">32 768</option>
+                  <option value="65536">65 536</option>
+                  <option value="131072">131 072</option>
+                </select>
+                <span id="gpuInfoBadge" class="badge badge-gpu">detecting…</span>
+              </div>
+            </div>
+            <div class="setting">
+              <label class="setting-label" for="llm-gpu-layers">LLM on GPU (layers)</label>
+              <select id="llm-gpu-layers" title="n_gpu_layers for llama.cpp: -1 = all layers on GPU; lower values = partial offload if the driver hangs with full offload">
+                <option value="-1" selected>All on GPU (−1)</option>
+                <option value="64">64</option>
+                <option value="48">48</option>
+                <option value="32">32</option>
+                <option value="24">24</option>
+                <option value="16">16</option>
+                <option value="8">8</option>
+                <option value="0">CPU only (diagnostic)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="setting">
+              <label class="setting-label" for="language">Tongue of the voice</label>
+              <div class="select-with-badge">
+                <select id="language">
+                  <option value="" selected>auto-divine</option>
+                  <option value="en">English</option>
+                  <option value="ru">Russian</option>
+                  <option value="ja">Japanese</option>
+                  <option value="zh">Chinese</option>
+                  <option value="de">German</option>
+                  <option value="fr">French</option>
+                  <option value="es">Spanish</option>
+                  <option value="ko">Korean</option>
+                </select>
+                <span id="fastModeBadge" class="badge" style="display: none;">swift</span>
+              </div>
+            </div>
+            <div class="setting">
+              <label class="setting-label" for="summaryLanguageSelect">Tongue of the chronicle</label>
+              <select id="summaryLanguageSelect">
+                <option value="auto" selected>same as voice</option>
+                <option value="ru">Russian</option>
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="de">German</option>
+                <option value="fr">French</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="pt">Portuguese</option>
+                <option value="it">Italian</option>
+                <option value="tr">Turkish</option>
+                <option value="ar">Arabic</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- No summary: transcription only -->
+          <div class="settings-grid">
+            <div class="setting full-width">
+              <label class="setting-label checkbox-label" for="no-summary-toggle">
+                <input type="checkbox" id="no-summary-toggle">
+                <span class="checkbox-label-text">Transcription only (skip summary)</span>
+              </label>
+            </div>
+            <div class="setting full-width">
+              <label
+                class="setting-label checkbox-label"
+                for="disable-thinking-toggle"
+                title="Qwen-family models: native /no_think on the user turn. Other models: extra system instruction (no /no_think text in the prompt)."
+              >
+                <input type="checkbox" id="disable-thinking-toggle" checked>
+                <span class="checkbox-label-text">Discourage hidden reasoning in summaries (recommended)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Diarization feature disabled -->
+          <div class="settings-grid" style="display:none">
+            <div class="setting full-width">
+              <label class="setting-label checkbox-label" for="diarize-toggle">
+                <input type="checkbox" id="diarize-toggle">
+                <span class="checkbox-label-text">Distinguish the speakers</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="setting full-width">
+              <label class="setting-label" for="output-dir">Whither shall it be writ</label>
+              <div class="output-row">
+                <input type="text" id="output-dir" value="./output" spellcheck="false">
+                <button id="btn-output-dir" class="btn-icon" title="choose folder">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M2 4.5C2 3.67 2.67 3 3.5 3H6l1.5 2h5c.83 0 1.5.67 1.5 1.5V12c0 .83-.67 1.5-1.5 1.5h-9A1.5 1.5 0 0 1 2 12V4.5Z" stroke="currentColor" stroke-width="1.2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          </div>
+        </section>
+
+        <!-- Inquisition panel -->
+        <section class="panel collapsible collapsed inquisition-panel hidden" id="inquisition-panel">
+          <h2 class="section-label panel-toggle" data-panel="inquisition-panel">III. &nbsp;Articles of the Inquisitor <span class="toggle-chevron">&#x25BE;</span></h2>
+          <div class="panel-body">
+          <div class="setting full-width">
+            <label class="setting-label" for="inq-goal">Evaluation goal</label>
+            <textarea id="inq-goal" class="inquisition-textarea" rows="2" placeholder="e.g. Evaluate how propagandistic this video is…" spellcheck="false"></textarea>
+          </div>
+
+          <div class="setting full-width">
+            <label class="setting-label" for="inq-required">What to look for</label>
+            <textarea id="inq-required" class="inquisition-textarea" placeholder="One item per line…" spellcheck="false"></textarea>
+          </div>
+
+          <div class="setting full-width">
+            <label class="setting-label" for="inq-redflags">Red flags / warnings</label>
+            <textarea id="inq-redflags" class="inquisition-textarea" placeholder="One item per line…" spellcheck="false"></textarea>
+          </div>
+
+          <div class="setting full-width">
+            <label class="setting-label" for="inq-criteria">Scoring criteria</label>
+            <textarea id="inq-criteria" class="inquisition-textarea" placeholder="objectivity&#10;factual accuracy&#10;emotional manipulation&#10;source quality" spellcheck="false"></textarea>
+          </div>
+          </div>
+        </section>
+
+        <!-- Bard panel -->
+        <section class="panel collapsible collapsed bard-panel hidden" id="bard-panel">
+          <h2 class="section-label panel-toggle" data-panel="bard-panel">III. &nbsp;The Bard's Muse <span class="toggle-chevron">&#x25BE;</span></h2>
+          <div class="panel-body">
+          <div class="setting full-width">
+            <label class="setting-label" for="bard-focus">What tales interest thee</label>
+            <textarea id="bard-focus" class="bard-textarea" rows="2" placeholder="e.g. funniest moments, dramatic twists, key arguments, emotional peaks…" spellcheck="false"></textarea>
+          </div>
+
+          <div class="setting full-width">
+            <label class="setting-label" for="bard-count">How many highlights</label>
+            <select id="bard-count">
+              <option value="5">5 — a brief ballad</option>
+              <option value="10" selected>10 — a proper tale</option>
+              <option value="20">20 — an epic saga</option>
+              <option value="0">all worthy moments</option>
+            </select>
+          </div>
+
+          <div class="setting full-width">
+            <label class="setting-label checkbox-label" for="bard-timestamps">
+              <input type="checkbox" id="bard-timestamps" checked>
+              Include timestamps for each highlight
+            </label>
+          </div>
+
+          <div class="setting full-width">
+            <label class="setting-label checkbox-label" for="bard-quotes">
+              <input type="checkbox" id="bard-quotes" checked>
+              Include verbatim quotes
+            </label>
+          </div>
+          </div>
+        </section>
+
+        <!-- ETA display -->
+        <section class="panel" id="etaBox" hidden>
+          <h2 class="section-label" id="eta-label">III. &nbsp;The hourglass</h2>
+          <div class="eta-content">
+            <div class="hourglass-wrap">
+              <svg class="hourglass-svg" viewBox="0 0 60 80" fill="none" aria-hidden="true">
+                <!-- Top cap -->
+                <rect x="10" y="2" width="40" height="4" rx="1" fill="currentColor" opacity="0.8"/>
+                <!-- Bottom cap -->
+                <rect x="10" y="74" width="40" height="4" rx="1" fill="currentColor" opacity="0.8"/>
+                <!-- Glass outline -->
+                <path d="M14 6 C14 6 14 28 30 38 C14 48 14 74 14 74 L46 74 C46 74 46 48 30 38 C46 28 46 6 46 6 Z"
+                      stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.7"/>
+                <!-- Top sand (draining) -->
+                <path class="sand-top" d="M18 10 L42 10 C42 10 40 26 30 34 C20 26 18 10 18 10Z"
+                      fill="var(--gold)" opacity="0.85"/>
+                <!-- Stream -->
+                <line class="sand-stream" x1="30" y1="34" x2="30" y2="46"
+                      stroke="var(--gold)" stroke-width="1.5" opacity="0.7"/>
+                <!-- Bottom sand (filling) -->
+                <path class="sand-bottom" d="M20 68 C20 68 22 54 30 46 C38 54 40 68 40 68 Z"
+                      fill="var(--gold)" opacity="0.85"/>
+                <!-- Decorative knobs -->
+                <circle cx="12" cy="4" r="2" fill="currentColor" opacity="0.6"/>
+                <circle cx="48" cy="4" r="2" fill="currentColor" opacity="0.6"/>
+                <circle cx="12" cy="76" r="2" fill="currentColor" opacity="0.6"/>
+                <circle cx="48" cy="76" r="2" fill="currentColor" opacity="0.6"/>
+              </svg>
+            </div>
+            <div class="eta-value">
+              <span id="etaPre">—</span>
+              <span id="etaRuntime" class="eta-runtime"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Action buttons -->
+        <div class="action-bar">
+          <button id="btn-start" class="btn-primary" disabled>✦ Begin the transcription ✦</button>
+          <button id="btn-cancel" class="btn-secondary" disabled>Cease</button>
+        </div>
+
+        <!-- Pipeline progress -->
+        <div id="progress-panel" class="progress-section hidden">
+          <div class="pipeline-stages">
+            <div class="stage" data-stage="download">
+              <div class="stage-icon">
+                <svg viewBox="0 0 28 28" fill="none">
+                  <!-- Scroll / rolled parchment -->
+                  <ellipse cx="6" cy="14" rx="3" ry="10" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                  <rect x="6" y="4" width="16" height="20" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                  <ellipse cx="22" cy="14" rx="3" ry="10" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                  <line x1="10" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+                  <line x1="10" y1="14" x2="18" y2="14" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+                  <line x1="10" y1="18" x2="16" y2="18" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+                </svg>
+              </div>
+              <span>Fetch</span>
+            </div>
+            <div class="stage-line"></div>
+            <div class="stage" data-stage="extract">
+              <div class="stage-icon">
+                <svg viewBox="0 0 28 28" fill="none">
+                  <!-- Alembic / distillation flask -->
+                  <path d="M11 4 L11 10 L5 22 C4 24 6 26 8 26 L20 26 C22 26 24 24 23 22 L17 10 L17 4"
+                        stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+                  <line x1="9" y1="4" x2="19" y2="4" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M8 18 Q14 14 20 18" stroke="currentColor" stroke-width="0.8" opacity="0.5" fill="none"/>
+                  <circle cx="12" cy="22" r="1" fill="currentColor" opacity="0.4"/>
+                  <circle cx="16" cy="21" r="0.8" fill="currentColor" opacity="0.3"/>
+                </svg>
+              </div>
+              <span>Distil</span>
+            </div>
+            <div class="stage-line"></div>
+            <div class="stage" data-stage="transcribe">
+              <div class="stage-icon">
+                <svg viewBox="0 0 28 28" fill="none">
+                  <!-- Quill & inkwell -->
+                  <path d="M22 2C18 5 16 10 14 16C13 18 12 20 11 22L12 23C13 22 14 20 15 18
+                           C17 12 19 7 23 4C24 3 23 1 22 2Z"
+                        fill="currentColor" opacity="0.8"/>
+                  <path d="M12 23L11 22C11 22 10 24 9 25C10 25 12 24 12 23Z" fill="currentColor" opacity="0.6"/>
+                  <rect x="3" y="20" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                  <path d="M4 22 Q7 20 10 22" stroke="currentColor" stroke-width="0.8" opacity="0.5" fill="none"/>
+                </svg>
+              </div>
+              <span>Scribe</span>
+            </div>
+            <div class="stage-line"></div>
+            <div class="stage" data-stage="summarize">
+              <div class="stage-icon">
+                <svg viewBox="0 0 28 28" fill="none">
+                  <!-- Reading lens / magnifying glass -->
+                  <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.4" fill="none"/>
+                  <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+                  <line x1="18" y1="18" x2="26" y2="26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9 10 Q12 7 15 10" stroke="currentColor" stroke-width="0.6" opacity="0.3" fill="none"/>
+                </svg>
+              </div>
+              <span>Gloss</span>
+            </div>
+            <div class="stage-line"></div>
+            <div class="stage" data-stage="format">
+              <div class="stage-icon">
+                <svg viewBox="0 0 28 28" fill="none">
+                  <!-- Candle with flame -->
+                  <rect x="11" y="12" width="6" height="14" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                  <line x1="14" y1="12" x2="14" y2="8" stroke="currentColor" stroke-width="1"/>
+                  <path d="M14 2 C11 4 10 6 14 8 C18 6 17 4 14 2Z" fill="currentColor" opacity="0.8"/>
+                  <ellipse cx="14" cy="5" rx="1.2" ry="2" fill="currentColor" opacity="0.3"/>
+                  <!-- Drip lines -->
+                  <path d="M12 16 Q11 18 12 20" stroke="currentColor" stroke-width="0.5" opacity="0.3" fill="none"/>
+                  <path d="M16 14 Q17 17 16 19" stroke="currentColor" stroke-width="0.5" opacity="0.3" fill="none"/>
+                  <!-- Base plate -->
+                  <ellipse cx="14" cy="26" rx="7" ry="1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+                </svg>
+              </div>
+              <span>Limn</span>
+            </div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div id="progress-bar" class="progress-bar"></div>
+          </div>
+          <div class="progress-status">
+            <span id="progress-percent">0 %</span>
+            <span id="progress-message">the scribe awaiteth…</span>
+          </div>
+        </div>
+
+        <!-- Error message -->
+        <div id="error-message" class="error-box hidden"></div>
+
+      </aside>
+
+      <!-- Main pane: result / transcript -->
+      <main class="main-pane">
+        <section id="result-panel" class="codex">
+          <div class="codex-header">
+            <h2 class="codex-title" id="codex-title">The Chronicle</h2>
+            <button id="btn-inq-prompt-help" class="btn-sm inq-prompt-help-toggle" type="button" aria-expanded="false" aria-controls="inq-prompt-help-panel" hidden>
+              Prompt guide
+            </button>
+            <div class="result-actions" id="result-actions">
+              <button id="btn-copy" class="btn-sm" title="copy markdown">
+                <svg viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M3 11V3a1 1 0 0 1 1-1h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Copy
+              </button>
+              <button id="btn-open-file" class="btn-sm" title="open file">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M9 2H4.5A1.5 1.5 0 0 0 3 3.5v9A1.5 1.5 0 0 0 4.5 14h7a1.5 1.5 0 0 0 1.5-1.5V6L9 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><polyline points="9,2 9,6 13,6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+                Folio
+              </button>
+              <button id="btn-open-folder" class="btn-sm" title="open folder">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M2 4.5C2 3.67 2.67 3 3.5 3H6l1.5 2h5c.83 0 1.5.67 1.5 1.5V12c0 .83-.67 1.5-1.5 1.5h-9A1.5 1.5 0 0 1 2 12V4.5Z" stroke="currentColor" stroke-width="1.2"/></svg>
+                Scriptorium
+              </button>
+            </div>
+          </div>
+          <div class="codex-body">
+            <section id="inq-prompt-help-panel" class="inq-prompt-help-panel" role="region" aria-labelledby="inq-prompt-help-title" hidden>
+              <div class="inq-prompt-help-header">
+                <h3 id="inq-prompt-help-title" class="inq-prompt-help-title">Inquisition prompts - quick guide</h3>
+                <button id="btn-inq-prompt-help-close" class="btn-sm inq-prompt-help-close" type="button" aria-label="Close prompt guide">
+                  Close
+                </button>
+              </div>
+              <p class="inq-prompt-help-intro">Use the four fields in the sidebar to steer the verdict. Works for any content: calls, videos, lectures, propaganda analysis, etc.</p>
+              <ul class="inq-prompt-help-list">
+                <li><strong>Evaluation goal:</strong> Describe what you want to evaluate. This sets the overall direction of the analysis.</li>
+                <li><strong>What to look for:</strong> One item per line. Key elements, claims, or markers that should be found and tracked.</li>
+                <li><strong>Red flags / warnings:</strong> One item per line. Problematic patterns, manipulative techniques, or violations to flag.</li>
+                <li><strong>Scoring criteria:</strong> One criterion per line. Each criterion will get an individual X/10 score with justification.</li>
+                <li><strong>Keep prompts concrete:</strong> Prefer "uses emotional manipulation without evidence" over "bad video".</li>
+                <li><strong>Stay language-aware:</strong> Write prompts in the output language you expect from the report.</li>
+              </ul>
+              <pre class="inq-prompt-help-example">Evaluation goal:
+Evaluate how propagandistic this video is
+
+What to look for:
+- factual claims with sources
+- balanced presentation of viewpoints
+- clear attribution of opinions
+
+Red flags / warnings:
+- emotional manipulation without evidence
+- dehumanizing language
+- false dichotomies
+- cherry-picked statistics
+
+Scoring criteria:
+- objectivity
+- factual accuracy
+- source quality
+- balanced representation</pre>
+            </section>
+            <div id="result-placeholder" class="result-placeholder">
+              <div class="illum-frame">
+                <div class="illum-cap" id="illum-cap">
+                  <svg class="illum-cap-seal illum-seal-quill" viewBox="0 0 48 48" fill="none" overflow="visible" aria-hidden="true">
+                    <g class="illum-anim-quill">
+                      <path d="M42 6C33 9 24 17 18 27C14 33 10 39 7 44
+                               C12 41 17 37 22 33C32 24 39 15 43 7.5
+                               C43.5 6.6 43 5.7 42 6Z"
+                            fill="currentColor"
+                            opacity="0.22"/>
+                      <path d="M42 6C33 9 24 17 18 27C14 33 10 39 7 44
+                               C12 41 17 37 22 33C32 24 39 15 43 7.5"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            opacity="0.92"/>
+                      <line x1="41.5" y1="7" x2="9.2" y2="42.6"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            opacity="0.96"/>
+                      <path d="M37.2 11.5C31 16.5 24.8 23.2 19 31.5"
+                            stroke="currentColor"
+                            stroke-width="1.1"
+                            stroke-linecap="round"
+                            opacity="0.55"/>
+                      <path d="M9.2 42.6L6.4 45.6L10.6 44.2Z" fill="currentColor" opacity="0.96"/>
+                      <line x1="8.8" y1="43.5" x2="8.0" y2="45.0"
+                            stroke="currentColor"
+                            stroke-width="0.9"
+                            stroke-linecap="round"
+                            opacity="0.8"/>
+                      <path class="illum-quill-ink" d="M3 40 Q6 36 10 38 T14 41" fill="none"/>
+                      <!-- Short hand-like stroke under nib; pathLength normalizes dash draw -->
+                      <path class="illum-quill-trail" pathLength="100" d="M 5.2 42.8 L 7.1 42.1 L 8.8 42.6 L 10.5 42 L 12.4 42.5 L 14.2 41.9 L 16 42.3 L 17.8 41.7" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                  </svg>
+                  <svg class="illum-cap-seal illum-seal-mace hidden" viewBox="0 0 48 48" fill="none" overflow="visible" aria-hidden="true">
+                    <!-- Puddle: hidden until pipeline runs (see .processing-illum on body) -->
+                    <ellipse class="illum-mace-puddle illum-mace-impact" cx="24" cy="43" rx="10" ry="3" />
+                    <g class="illum-anim-mace">
+                      <line x1="17" y1="32" x2="33" y2="16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                      <circle cx="34" cy="14" r="5" fill="currentColor" opacity="0.9"/>
+                      <path d="M34 6V3M34 25V22M26 14H23M45 14H42M28.5 8.5L26.4 6.4M39.5 19.5L41.6 21.6M39.5 8.5L41.6 6.4M28.5 19.5L26.4 21.6"
+                            stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                      <circle cx="16" cy="33" r="2.8" fill="currentColor" opacity="0.8"/>
+                    </g>
+                  </svg>
+                  <svg class="illum-cap-seal illum-seal-lute hidden" viewBox="0 0 48 48" fill="none" overflow="visible" aria-hidden="true">
+                    <g class="illum-anim-lute">
+                      <ellipse cx="24" cy="30" rx="11" ry="13" fill="currentColor" opacity="0.18"/>
+                      <ellipse cx="24" cy="30" rx="11" ry="13" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.9"/>
+                      <circle cx="24" cy="32" r="3" stroke="currentColor" stroke-width="1.0" fill="none" opacity="0.7"/>
+                      <circle cx="24" cy="32" r="1" fill="currentColor" opacity="0.4"/>
+                      <rect x="22.2" y="6" width="3.6" height="14" rx="1" fill="currentColor" opacity="0.15"/>
+                      <rect x="22.2" y="6" width="3.6" height="14" rx="1" stroke="currentColor" stroke-width="1.3" fill="none" opacity="0.9"/>
+                      <path d="M22.2 6 L21 2.5 L27 2.5 L25.8 6" stroke="currentColor" stroke-width="1.3" fill="currentColor" fill-opacity="0.12" stroke-linejoin="round"/>
+                      <line x1="21.5" y1="3.5" x2="19.5" y2="3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                      <line x1="26.5" y1="3.5" x2="28.5" y2="3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                      <line x1="21.8" y1="5" x2="20" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                      <line x1="26.2" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                      <line x1="21" y1="38" x2="27" y2="38" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+                      <g class="illum-anim-lute-strings">
+                        <line x1="23" y1="8" x2="23" y2="40" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+                        <line x1="24" y1="8" x2="24" y2="40" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+                        <line x1="25" y1="8" x2="25" y2="40" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+                      </g>
+                    </g>
+                    <g class="illum-lute-notes" fill="currentColor" aria-hidden="true">
+                      <g class="illum-lute-note">
+                        <circle cx="22.8" cy="31.6" r="2" opacity="0.9"/>
+                        <line x1="24.6" y1="31.6" x2="24.6" y2="23.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                      </g>
+                      <g class="illum-lute-note">
+                        <circle cx="25.2" cy="33.4" r="1.7" opacity="0.85"/>
+                        <line x1="26.7" y1="33.4" x2="26.7" y2="25.4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                      </g>
+                      <g class="illum-lute-note">
+                        <circle cx="24.2" cy="30.2" r="1.5" opacity="0.8"/>
+                        <line x1="25.4" y1="30.2" x2="25.4" y2="22.8" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                <p class="illum-text" id="illum-text">Herein shall the scribe's chronicle appear,<br>once the voice hath been committed to vellum.</p>
+              </div>
+            </div>
+            <div id="result-meta" class="result-meta hidden"></div>
+            <div id="result-content" class="result-content hidden"></div>
+          </div>
+          <div class="codex-footer">
+            <span class="footer-mark">— finis —</span>
+          </div>
+          <!-- Talk to Oracle — anchored inside the Chronicle, bottom-right of parchment.
+               Appears once a chronicle is ready. -->
+          <div id="oracle-cta" class="oracle-cta hidden" role="button" tabindex="0" aria-label="Open the Oracle chat">
+            <img class="oracle-cta-image" src="assets/oracle/oracle-writing-1.svg" alt="" aria-hidden="true">
+            <div class="oracle-cta-body">
+              <div class="oracle-cta-title">Talk to the Oracle</div>
+              <div class="oracle-cta-sub">Ask anything about this video — the Oracle read every line.</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+    </div>
+
+    <!-- Oracle chat modal -->
+    <div id="oracle-modal" class="oracle-modal hidden" role="dialog" aria-modal="true" aria-labelledby="oracle-modal-title">
+      <div class="oracle-modal-backdrop" data-oracle-close="1"></div>
+      <div class="oracle-modal-panel">
+        <header class="oracle-modal-header">
+          <div class="oracle-avatar-wrap" aria-hidden="true">
+            <img id="oracle-avatar-idle" class="oracle-avatar" src="assets/oracle/oracle-head-idle.svg" alt="">
+            <img id="oracle-avatar-speaking" class="oracle-avatar oracle-avatar-hidden" src="assets/oracle/oracle-head-speaking.svg" alt="">
+          </div>
+          <div class="oracle-modal-titles">
+            <h2 id="oracle-modal-title" class="oracle-modal-title">The Oracle</h2>
+            <div id="oracle-modal-sub" class="oracle-modal-sub">Bound to this video. Ask anything about what was said.</div>
+          </div>
+          <button id="oracle-close-btn" class="oracle-close-btn" type="button" data-oracle-close="1" aria-label="Close oracle">&times;</button>
+        </header>
+
+        <div id="oracle-messages" class="oracle-messages" aria-live="polite" aria-relevant="additions">
+          <!-- messages injected here -->
+        </div>
+
+        <form id="oracle-form" class="oracle-composer">
+          <textarea
+            id="oracle-input"
+            class="oracle-input"
+            placeholder="Frame thy question upon this chronicle…"
+            spellcheck="false"
+            autocomplete="off"
+            rows="2"
+          ></textarea>
+          <div class="oracle-composer-actions">
+            <button id="oracle-stop" class="oracle-stop-btn hidden" type="button">Cease</button>
+            <button id="oracle-send" class="oracle-send-btn" type="submit">Petition</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

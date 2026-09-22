@@ -1,0 +1,14 @@
+---
+description: Auto-select and use project agents by task
+alwaysApply: true
+---
+
+# Agent Auto Selection
+
+- For every user request, first check project agents in `.agent/agents/`.
+- Never wait for a user reminder like "use an agent" if a matching specialist is available.
+- Match task intent to the best agent profile (frontend, backend, qa, security, docs, etc.).
+- Prefer the narrowest specialist that fits the task; use orchestrator only for multi-domain work.
+- If multiple specialties are needed, run multiple agents in parallel and merge results.
+- If no suitable agent exists, continue with direct execution and state that fallback was used.
+- For renderer/UI tasks (`electron/renderer`, HTML, CSS, responsiveness), default to `frontend-specialist`.
