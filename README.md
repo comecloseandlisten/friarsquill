@@ -3,9 +3,9 @@
 </h1>
 
 <p align="center">
-  Локальная рукопись для видео и аудио.<br>
-  Ссылка или файл на столе → транскрипт → сводка в Markdown с таймкодами.<br>
-  <strong>Electron + Python. Без облачных API.</strong>
+  A local manuscript for video and audio.<br>
+  A link or a file on the desk → a transcript → a Markdown summary with timestamps.<br>
+  <strong>Electron + Python. No cloud APIs.</strong>
 </p>
 
 <p align="center">
@@ -21,73 +21,73 @@
 
 ---
 
-## Три лика пера
+## Three faces of the quill
 
-Печать в шапке окна меняется вместе с режимом. В бэкенд уходит поле `summary_mode`.
+The seal in the window header changes with the mode. The backend receives `summary_mode`.
 
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src="docs/brand/seal-quill.svg" width="96" alt="Перо — Chronicle"><br><br>
+      <img src="docs/brand/seal-quill.svg" width="96" alt="Quill — Chronicle"><br><br>
       <strong>Chronicle</strong><br>
       <code>notes</code><br><br>
-      Хроника: обзор, тезисы, термины, цитаты, вывод.
+      A chronicle: overview, theses, terms, quotations, and a closing.
     </td>
     <td align="center" width="33%">
-      <img src="docs/brand/seal-mace.svg" width="96" alt="Булава — Inquisition"><br><br>
+      <img src="docs/brand/seal-mace.svg" width="96" alt="Mace — Inquisition"><br><br>
       <strong>Inquisition</strong><br>
       <code>inquisition</code><br><br>
-      Трибунал: цель оценки, обязательные пункты, красные флаги, скоринг.
+      The tribunal: an evaluation goal, required items, red flags, and a score.
     </td>
     <td align="center" width="33%">
-      <img src="docs/brand/seal-lute.svg" width="96" alt="Лютня — Ballad"><br><br>
+      <img src="docs/brand/seal-lute.svg" width="96" alt="Lute — Ballad"><br><br>
       <strong>Ballad</strong><br>
       <code>bard</code><br><br>
-      Баллада ярких мест: фокус, число моментов, таймкоды и цитаты.
+      A ballad of bright moments: focus, count, timestamps, and quotations.
     </td>
   </tr>
 </table>
 
-Промпты лежат в `backend/prompts/notes/`, `backend/prompts/inquisition/` и `backend/prompts/bard/`. Другие значения `summary_mode` (`call_check`, `factcheck`, `tldr`) доступны из API — см. [`backend/SUMMARY_MODES.md`](backend/SUMMARY_MODES.md).
+Prompts live in `backend/prompts/notes/`, `backend/prompts/inquisition/`, and `backend/prompts/bard/`. Other `summary_mode` values (`call_check`, `factcheck`, `tldr`) are available from the API — see [`backend/SUMMARY_MODES.md`](backend/SUMMARY_MODES.md).
 
 ---
 
-## Путь рукописи
+## The path of the manuscript
 
 ```
 Fetch  →  Distil  →  Scribe  →  Gloss  →  Limn
 ```
 
-| В окне | Стадия | Что происходит |
+| In the window | Stage | What happens |
 | --- | --- | --- |
-| **Fetch** | `download` | yt-dlp забирает аудио по ссылке или берётся локальный файл |
-| **Distil** | `extract` | ffmpeg приводит дорожку к 16 kHz mono WAV |
+| **Fetch** | `download` | yt-dlp pulls audio from a URL, or a local file is taken as-is |
+| **Distil** | `extract` | ffmpeg turns the track into 16 kHz mono WAV |
 | **Scribe** | `transcribe` | faster-whisper, Silero VAD |
-| **Gloss** | `summarize` | локальная GGUF-модель через llama.cpp |
-| **Limn** | `format` | Markdown с таймкодами, `*_summary.md` |
+| **Gloss** | `summarize` | a local GGUF model through llama.cpp |
+| **Limn** | `format` | Markdown with timestamps, `*_summary.md` |
 
-Транскрипция и суммаризация не держат модели в памяти одновременно. Длинный ролик идёт чанками: MAP по кускам, затем REDUCE в итоговый текст.
+Transcription and summarization never keep their models in memory at the same time. A long recording is split into chunks: MAP across the pieces, then REDUCE into the final text.
 
 ---
 
-## Оракул
+## The Oracle
 
 <p align="center">
   <img src="electron/renderer/assets/oracle/oracle-head-idle.svg" width="160" alt="The Oracle">
 </p>
 
 <p align="center">
-  <em>The Oracle</em> отвечает только по текущей рукописи:<br>
-  транскрипт и сводка этого ролика, с таймкодами. Чужие темы он отклоняет.
+  <em>The Oracle</em> answers only from the manuscript in front of it:<br>
+  this recording's transcript and summary, with timestamps. Other topics are refused.
 </p>
 
-После готовой хроники в окне появляется «Talk to the Oracle». Сессия привязана к паре «транскрипт + сводка» и не смешивается с другим видео. Методы: `oracle_chat`, `oracle_cancel`, `oracle_close`.
+When the chronicle is ready, the window offers “Talk to the Oracle”. The session is bound to that transcript-and-summary pair and does not mix with another video. Methods: `oracle_chat`, `oracle_cancel`, `oracle_close`.
 
 ---
 
-## С чего начать
+## Getting started
 
-Нужны **Python 3.10+**, **Node.js 18+** и **ffmpeg** в `PATH`.
+You need **Python 3.10+**, **Node.js 18+**, and **ffmpeg** on `PATH`.
 
 ```bash
 winget install ffmpeg   # Windows
@@ -101,84 +101,84 @@ pip install -r backend/requirements.txt
 npm start
 ```
 
-При первом запуске Whisper и LLM скачиваются сами (порядка 1–2 ГБ).
+On the first run, Whisper and the LLM download themselves (about 1–2 GB).
 
-1. Вставить ссылку или положить локальный файл.
-2. Выбрать кодекс Whisper и язык — или оставить автоопределение.
+1. Paste a link or lay down a local file.
+2. Choose a Whisper codex and a language, or leave auto-detect on.
 3. **Start Processing**.
-4. Забрать текст из окна или открыть готовый `.md`.
+4. Copy the text from the window, or open the finished `.md`.
 
 ---
 
-## Рубрики
+## Rubrics
 
-| Настройка | По умолчанию | Варианты |
+| Setting | Default | Options |
 | --- | --- | --- |
 | Whisper | `small` | tiny, base, small, medium, large-v3, large-v3-turbo |
 | Reckoning | `auto` | auto, int8, float16, float32 |
-| Язык | авто | en, ru, ja, zh, de, fr, es, ko и другие |
-| Oracle (LLM) | Qwen2.5-1.5B Q4_K_M | любой GGUF из настроек |
-| GPU layers | все (`-1`) | частичный offload или только CPU |
+| Language | auto | en, ru, ja, zh, de, fr, es, ko, and others |
+| Oracle (LLM) | Qwen2.5-1.5B Q4_K_M | any GGUF from settings |
+| GPU layers | all (`-1`) | partial offload, or CPU only |
 
-Источники: локальное видео или аудио, YouTube и прочие площадки, которые умеет [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+Sources: a local video or audio file, YouTube, and the other sites [yt-dlp](https://github.com/yt-dlp/yt-dlp) can reach.
 
 ---
 
-## Как устроено
+## How it is built
 
 ```
-Electron (UI)  ←——  JSON-RPC по stdio  ——→  Python (backend/main.py)
+Electron (UI)  ←——  JSON-RPC over stdio  ——→  Python (backend/main.py)
 ```
 
-| Слой | Где |
+| Layer | Where |
 | --- | --- |
-| Окно | `electron/main.js`, `electron/preload.js`, `electron/renderer/` |
-| Пайплайн | `backend/pipeline.py` |
-| Загрузка | `backend/downloader.py` |
-| Транскрипция | `backend/transcriber.py` — faster-whisper |
-| Сводка | `backend/summarizer.py` — llama-cpp-python |
-| Оракул | `backend/oracle.py` |
-| Вёрстка Markdown | `backend/formatter.py` |
+| Window | `electron/main.js`, `electron/preload.js`, `electron/renderer/` |
+| Pipeline | `backend/pipeline.py` |
+| Download | `backend/downloader.py` |
+| Transcription | `backend/transcriber.py` — faster-whisper |
+| Summary | `backend/summarizer.py` — llama-cpp-python |
+| Oracle | `backend/oracle.py` |
+| Markdown | `backend/formatter.py` |
 
-Это не HTTP: одна JSON-строка на stdin, ответы и прогресс — на stdout.
+This is not HTTP: one JSON line on stdin, replies and progress on stdout.
 
 <details>
-<summary><strong>Windows + NVIDIA: CUDA-колесо llama-cpp-python</strong></summary>
+<summary><strong>Windows + NVIDIA: a CUDA wheel for llama-cpp-python</strong></summary>
 
 <br>
 
-`backend/requirements.txt` ставит **llama-cpp-python** с PyPI. На Windows это CPU-колесо (`py3-none-win_amd64`), и сводка не видит GPU, пока его не заменить CUDA-сборкой.
+`backend/requirements.txt` installs **llama-cpp-python** from PyPI. On Windows that wheel is CPU-only (`py3-none-win_amd64`), so summarization never touches the GPU until you replace it with a CUDA build.
 
-Индексы abetlen в основном отдают Linux-колёса. Готовые Windows CUDA-сборки держит сообщество: [dougeeai/llama-cpp-python-wheels](https://github.com/dougeeai/llama-cpp-python-wheels/releases) (теги вроде **0.3.20**: `v0.3.20-cuda13.0-sm89` для Ada / RTX 40xx, `…-sm86` для Ampere / RTX 30xx, `…-sm75` для Turing / RTX 20xx).
+The abetlen indexes mostly ship Linux wheels. Ready Windows CUDA builds are maintained by the community: [dougeeai/llama-cpp-python-wheels](https://github.com/dougeeai/llama-cpp-python-wheels/releases) (tags around **0.3.20**: `v0.3.20-cuda13.0-sm89` for Ada / RTX 40xx, `…-sm86` for Ampere / RTX 30xx, `…-sm75` for Turing / RTX 20xx).
 
 ```powershell
 python -m pip install --force-reinstall --no-deps `
   "https://github.com/dougeeai/llama-cpp-python-wheels/releases/download/v0.3.20-cuda13.0-sm89/llama_cpp_python-0.3.20+cuda13.0.sm89.ada-py3-none-win_amd64.whl"
 ```
 
-Проверка:
+Check:
 
 ```powershell
 python -c "import llama_cpp.llama_cpp as L; print('gpu offload:', L.llama_supports_gpu_offload())"
 ```
 
-Матрица колёс и пропавшие `cublas`-DLL: [`backend/requirements-llama-cuda.txt`](backend/requirements-llama-cuda.txt).  
-Сборка из исходников (CUDA toolkit, MSVC, CMake): [`docs/WINDOWS_LLAMA_CPP_CUDA_SOURCE_BUILD.md`](docs/WINDOWS_LLAMA_CPP_CUDA_SOURCE_BUILD.md).
+Wheel matrix and missing `cublas` DLLs: [`backend/requirements-llama-cuda.txt`](backend/requirements-llama-cuda.txt).  
+Build from source (CUDA toolkit, MSVC, CMake): [`docs/WINDOWS_LLAMA_CPP_CUDA_SOURCE_BUILD.md`](docs/WINDOWS_LLAMA_CPP_CUDA_SOURCE_BUILD.md).
 
 </details>
 
 ---
 
-## Дальше по полкам
+## Further shelves
 
 | | |
 | --- | --- |
-| Обзор по-русски | [`docs/PROJECT_OVERVIEW_RU.md`](docs/PROJECT_OVERVIEW_RU.md) |
-| Карта для людей и моделей | [`llms.txt`](llms.txt) · [`docs/LLM_GUIDE.md`](docs/LLM_GUIDE.md) |
-| Куда править под задачу | [`docs/LLM_TASK_MATRIX.md`](docs/LLM_TASK_MATRIX.md) · [`docs/CHANGE_PLAYBOOK.md`](docs/CHANGE_PLAYBOOK.md) |
-| Бэкенд и протокол | [`docs/LLM_BACKEND_REFERENCE.md`](docs/LLM_BACKEND_REFERENCE.md) · [`docs/IPC_PROTOCOL.md`](docs/IPC_PROTOCOL.md) |
-| Указатель функций | [`docs/FUNCTION_INDEX.md`](docs/FUNCTION_INDEX.md) |
+| Overview in Russian | [`docs/PROJECT_OVERVIEW_RU.md`](docs/PROJECT_OVERVIEW_RU.md) |
+| Map for people and models | [`llms.txt`](llms.txt) · [`docs/LLM_GUIDE.md`](docs/LLM_GUIDE.md) |
+| Where to edit for a task | [`docs/LLM_TASK_MATRIX.md`](docs/LLM_TASK_MATRIX.md) · [`docs/CHANGE_PLAYBOOK.md`](docs/CHANGE_PLAYBOOK.md) |
+| Backend and protocol | [`docs/LLM_BACKEND_REFERENCE.md`](docs/LLM_BACKEND_REFERENCE.md) · [`docs/IPC_PROTOCOL.md`](docs/IPC_PROTOCOL.md) |
+| Function index | [`docs/FUNCTION_INDEX.md`](docs/FUNCTION_INDEX.md) |
 
-## Лицензия
+## License
 
 MIT
