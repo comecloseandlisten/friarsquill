@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 300" role="img" aria-label="Friar's Quill, The Chronicler">
+  <defs>
+    <linearGradient id="vellum" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf2d6"/>
+      <stop offset="0.55" stop-color="#f3e6c4"/>
+      <stop offset="1" stop-color="#e9d6a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1100" height="300" rx="18" fill="url(#vellum)"/>
+  <rect x="14" y="14" width="1072" height="272" rx="10" fill="none" stroke="#2a1a0a" stroke-width="2.5"/>
+  <rect x="24" y="24" width="1052" height="252" rx="6" fill="none" stroke="#b78319" stroke-width="1.25"/>
+  <g transform="translate(78 58) scale(3.55)">
+    <path
+      d="M42 6C33 9 24 17 18 27C14 33 10 39 7 44
+         C12 41 17 37 22 33C32 24 39 15 43 7.5
+         C43.5 6.6 43 5.7 42 6Z"
+      fill="#9c2a1f"
+      opacity="0.22"
+    />
+    <path
+      d="M42 6C33 9 24 17 18 27C14 33 10 39 7 44
+         C12 41 17 37 22 33C32 24 39 15 43 7.5"
+      fill="none"
+      stroke="#9c2a1f"
+      stroke-width="2.1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <line x1="41.5" y1="7" x2="9.2" y2="42.6" stroke="#2a1a0a" stroke-width="2" stroke-linecap="round"/>
+    <path d="M37.2 11.5C31 16.5 24.8 23.2 19 31.5" fill="none" stroke="#2a1a0a" stroke-width="1.25" stroke-linecap="round" opacity="0.55"/>
+    <path d="M9.2 42.6L6.4 45.6L10.6 44.2Z" fill="#2a1a0a"/>
+  </g>
+  <text x="330" y="128" fill="#2a1a0a" font-family="Palatino Linotype, Palatino, Georgia, 'Times New Roman', serif" font-size="68">Friar's Quill</text>
+  <text x="334" y="172" fill="#9c2a1f" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic">The Chronicler</text>
+  <line x1="334" y1="196" x2="560" y2="196" stroke="#b78319" stroke-width="1"/>
+  <text x="334" y="230" fill="#4a3018" font-family="Georgia, 'Times New Roman', serif" font-size="18">Offline transcription and summarization. The ink never leaves the desk.</text>
+</svg>
